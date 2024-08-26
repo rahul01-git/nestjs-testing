@@ -4,6 +4,7 @@ import {
   IsEnum,
   IsString,
   IsDate,
+  IsInt,
 } from 'class-validator';
 
 export class TaskDto {
@@ -25,4 +26,8 @@ export class TaskDto {
   @IsOptional()
   @IsDate()
   readonly dueDate?: Date;
+
+  @IsNotEmpty()
+  @IsInt()
+  readonly categoryId?: number;
 }

@@ -7,7 +7,10 @@ import {
   AutoIncrement,
   AllowNull,
   Default,
+  ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
+import { Category } from '../categories/category.entity';
 
 @Table({ tableName: 'tasks', timestamps: true })
 export class Task extends Model<Task> {
@@ -33,17 +36,11 @@ export class Task extends Model<Task> {
   @Column(DataType.DATE)
   dueDate?: Date;
 
-  @Column({
-    field: 'createdAt',
-    type: DataType.DATE,
-    defaultValue: DataType.NOW,
-  })
-  createdAt: Date;
+  @ForeignKey(() => Category)
+  @AllowNull(false)
+  @Column(DataType.INTEGER)
+  categoryId: number;
 
-  @Column({
-    field: 'updatedAt',
-    type: DataType.DATE,
-    defaultValue: DataType.NOW,
-  })
-  updatedAt: Date;
+  @BelongsTo(() => Category)
+  category: Category;
 }

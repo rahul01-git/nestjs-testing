@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Task } from './task.entity';
 import { TASK_REPOSITORY } from 'src/core/constants';
 import { TaskDto } from './dto/task.dto';
+import { Category } from '../categories/category.entity';
 
 @Injectable()
 export class TaskService {
@@ -11,11 +12,26 @@ export class TaskService {
   ) {}
 
   async findAll(): Promise<Task[]> {
-    return this.repository.findAll({ order: [['id', 'ASC']] });
+    return this.repository.findAll({
+      order: [['id', 'ASC']],
+      include: [
+        {
+          model: Category,
+          as: 'category',
+        },
+      ],
+    });
   }
 
   async findById(id: number): Promise<Task | null> {
-    return this.repository.findByPk(id);
+    return this.repository.findByPk(id, {
+      include: [
+        {
+          model: Category,
+          as: 'category',
+        },
+      ],
+    });
   }
 
   async create(taskDto: TaskDto): Promise<Task> {

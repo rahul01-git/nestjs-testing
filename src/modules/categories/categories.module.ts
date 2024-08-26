@@ -1,17 +1,11 @@
 import { Module } from '@nestjs/common';
 import { CategoriesController } from './categories.controller';
 import { CategoryService } from './categories.service';
-import { Category } from './category.entity';
-import { CATEGORY_REPOSITORY } from 'src/core/constants';
+import { CategoryProviders } from './categories.providers';
 
 @Module({
   controllers: [CategoriesController],
-  providers: [
-    CategoryService,
-    {
-      provide: CATEGORY_REPOSITORY,
-      useValue: Category,
-    },
-  ],
+  providers: [CategoryService, ...CategoryProviders],
+  exports: [CategoryService],
 })
 export class CategoriesModule {}

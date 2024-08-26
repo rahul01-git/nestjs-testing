@@ -9,11 +9,18 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  async findAll(): Promise<User[]> {
+  async findAll(): Promise<{
+    totalCategories: number;
+    totalTasks: number;
+    users: User[];
+  }> {
     this.logger.log('Fetching all users');
-    const users = await this.userService.findAll();
+    const { users, totalCategories, totalTasks } =
+      await this.userService.findAll();
     this.logger.log(`Fetched ${users.length} users`);
-    return users;
+    this.logger.log(`Fetched ${totalCategories} categories`);
+    this.logger.log(`Fetched ${totalTasks} tasks`);
+    return { users, totalCategories, totalTasks };
   }
 
   @Get(':id')
